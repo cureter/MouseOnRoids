@@ -4,6 +4,8 @@
 
 <h1 align="center">MouseOnRoids</h1>
 
+<p align="center"><b>English</b> · <a href="README.de.md">Deutsch</a></p>
+
 <p align="center">
   Make a regular (non-Apple) mouse feel great on macOS.<br>
   Smooth, controllable wheel scrolling · Windows-style middle-click autoscroll · middle-click folders into Finder tabs
@@ -42,17 +44,24 @@ Requires macOS 13 Ventura or newer. Runs natively on Intel and Apple Silicon.
 
 ## Usage
 
-Click the mouse icon in the menu bar → **Einstellungen…** (Settings).
-The interface is currently in German.
+Click the mouse icon in the menu bar → **Settings…**.
+The app is available in English and German and follows your system language.
 
 | Setting | What it does |
 | --- | --- |
-| Scroll-Distanz | Distance per wheel notch |
-| Weichheit | How long each scroll glides |
-| Beschleunigung | Extra distance when spinning the wheel fast (0 = linear) |
-| Mittlere Maustaste | Autoscroll on/off, speed, keep middle-click on links/tabs |
+| Scroll distance | Distance per wheel notch |
+| Smoothness | How long each scroll glides |
+| Acceleration | Extra distance when spinning the wheel fast (off = linear) |
+| Middle mouse button | Autoscroll on/off, speed, keep middle-click on links/tabs |
 | Finder | Middle-click a folder to open it in a new tab |
-| Ausnahmen | Apps where MouseOnRoids does nothing (e.g. games) |
+| Exceptions | Apps where MouseOnRoids does nothing (e.g. games) |
+| Menu bar icon | Monochrome (macOS style) or the colored app icon |
+
+## Translations
+
+Translations live in `Resources/<language>.lproj/Localizable.strings`; the English text is the key.
+To add a language, copy `Resources/de.lproj` to e.g. `Resources/fr.lproj`, translate the right-hand
+side, add the language code to `CFBundleLocalizations` in `Info.plist` and open a pull request.
 
 ## Building from source
 
@@ -70,13 +79,6 @@ The icon is drawn in code: `swift tools/make-icon.swift Resources/icon_1024.png`
 signature every time, so you would have to re-allow the app after each build. Create a self-signed
 code-signing certificate in Keychain Access and pass its name via `SIGN_IDENTITY="My Cert" ./build.sh`
 to keep the permission across builds.
-
-## Deutsch
-
-MouseOnRoids sorgt dafür, dass sich eine normale Maus am Mac gut anfühlt: sanftes, kontrolliertes
-Scrollen mit dem Mausrad, Autoscroll mit der mittleren Maustaste wie unter Windows und Ordner im
-Finder per Mittelklick als Tab öffnen. Installation wie oben beschrieben; beim ersten Start
-**Rechtsklick → Öffnen** und danach unter *Datenschutz & Sicherheit → Bedienungshilfen* erlauben.
 
 ## License
 

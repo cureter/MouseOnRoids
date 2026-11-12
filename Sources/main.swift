@@ -70,21 +70,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let menu = NSMenu()
         menu.delegate = self
 
-        enabledItem = NSMenuItem(title: "Aktiviert", action: #selector(toggleEnabled), keyEquivalent: "")
+        enabledItem = NSMenuItem(title: String(localized: "Enabled"), action: #selector(toggleEnabled), keyEquivalent: "")
         enabledItem.target = self
         menu.addItem(enabledItem)
 
-        permissionItem = NSMenuItem(title: "⚠︎ Bedienungshilfen-Zugriff fehlt", action: #selector(showSettings), keyEquivalent: "")
+        permissionItem = NSMenuItem(title: String(localized: "⚠︎ Accessibility permission missing"), action: #selector(showSettings), keyEquivalent: "")
         permissionItem.target = self
         menu.addItem(permissionItem)
 
         menu.addItem(.separator())
-        let settings = NSMenuItem(title: "Einstellungen…", action: #selector(showSettings), keyEquivalent: ",")
+        let settings = NSMenuItem(title: String(localized: "Settings…"), action: #selector(showSettings), keyEquivalent: ",")
         settings.target = self
         menu.addItem(settings)
 
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "MouseOnRoids beenden", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: String(localized: "Quit MouseOnRoids"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 
         statusItem.menu = menu
         refreshStatus()
@@ -107,18 +107,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         enabledItem.state = enabled ? .on : .off
         permissionItem.isHidden = engine.isRunning
         statusItem.isVisible = UserDefaults.standard.bool(forKey: Key.showMenuIcon)
-        statusItem.button?.image = menuBarIcon
+        statusItem.button?.image = Settings.monochromeMenuIcon ? MenuBarIcon.monochrome : MenuBarIcon.color
         // Ausgeschaltet oder ohne Berechtigung: Symbol abgeblendet
         statusItem.button?.alphaValue = enabled && engine.isRunning ? 1 : 0.4
     }
-
-    /// Das App-Icon in Menüleisten-Größe
-    private lazy var menuBarIcon: NSImage? = {
-        let icon = NSApp.applicationIconImage.copy() as? NSImage
-        icon?.size = NSSize(width: 20, height: 20)
-        icon?.accessibilityDescription = "MouseOnRoids"
-        return icon
-    }()
 
     @objc private func toggleEnabled() {
         UserDefaults.standard.set(!Settings.enabled, forKey: Key.enabled)

@@ -12,6 +12,7 @@ enum Key {
     static let shiftHorizontal = "shiftHorizontal"
     static let excludedApps = "excludedApps"     // Bundle-IDs, in denen nichts verändert wird
     static let showMenuIcon = "showMenuIcon"
+    static let monochromeMenuIcon = "monochromeMenuIcon"   // weißes/schwarzes Vorlagen-Symbol statt farbigem Icon
     static let autoscroll = "autoscroll"                   // Mittlere Taste = Autoscroll wie unter Windows
     static let autoscrollSpeed = "autoscrollSpeed"         // Faktor 0.3 … 3
     static let autoscrollKeepLinks = "autoscrollKeepLinks" // Mittelklick auf Links/Tabs normal lassen
@@ -29,6 +30,7 @@ enum Defaults {
         Key.shiftHorizontal: true,
         Key.excludedApps: [String](),
         Key.showMenuIcon: true,
+        Key.monochromeMenuIcon: true,
         Key.autoscroll: true,
         Key.autoscrollSpeed: 1.0,
         Key.autoscrollKeepLinks: true,
@@ -58,4 +60,5 @@ struct Settings {
     static var autoscrollSpeed: Double { d.double(forKey: Key.autoscrollSpeed) }
     static var autoscrollKeepLinks: Bool { d.bool(forKey: Key.autoscrollKeepLinks) }
     static var finderMiddleTab: Bool { d.bool(forKey: Key.finderMiddleTab) }
+    static var monochromeMenuIcon: Bool { d.bool(forKey: Key.monochromeMenuIcon) }
 }

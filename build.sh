@@ -22,6 +22,7 @@ for s in 16 32 128 256 512; do
     sips -z $((s*2)) $((s*2)) Resources/icon_1024.png --out "$ICONSET/icon_${s}x${s}@2x.png" >/dev/null
 done
 iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
+cp -R Resources/*.lproj "$APP/Contents/Resources/"
 
 if [[ $MODE == release ]]; then
     ARCHS=(x86_64 arm64)

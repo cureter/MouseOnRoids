@@ -1,0 +1,65 @@
+/* Deutsche Übersetzung von MouseOnRoids. Schlüssel = englischer Originaltext. */
+
+/* Menüleiste */
+"Enabled" = "Aktiviert";
+"⚠︎ Accessibility permission missing" = "⚠︎ Bedienungshilfen-Zugriff fehlt";
+"Settings…" = "Einstellungen…";
+"Quit MouseOnRoids" = "MouseOnRoids beenden";
+
+/* Status */
+"Running – mouse wheel is being smoothed" = "Läuft – Mausrad wird geglättet";
+"Accessibility permission missing" = "Bedienungshilfen-Zugriff fehlt";
+"Until access is granted, the mouse scrolls normally, as without MouseOnRoids. Allow MouseOnRoids under Privacy & Security → Accessibility." = "Solange der Zugriff fehlt, scrollt die Maus ganz normal wie ohne MouseOnRoids. Erlaube MouseOnRoids unter Datenschutz & Sicherheit → Bedienungshilfen.";
+"Open System Settings" = "Systemeinstellungen öffnen";
+"Smooth scrolling enabled" = "Sanftes Scrollen aktiviert";
+
+/* Scrollverhalten */
+"Scrolling" = "Scrollverhalten";
+"Preset" = "Voreinstellung";
+"Custom" = "Eigene";
+"Precise" = "Präzise";
+"Balanced" = "Ausgewogen";
+"Fast" = "Schnell";
+"Scroll distance per notch" = "Scroll-Distanz pro Raste";
+"Smaller = less distance per click of the wheel." = "Kleiner = weniger Strecke pro Klick am Mausrad.";
+"Smoothness" = "Weichheit";
+"How long scrolling glides after each notch." = "Wie lange das Scrollen nach jeder Raste ausrollt.";
+"Acceleration" = "Beschleunigung";
+"off" = "aus";
+"Spinning the wheel fast scrolls further. “off” = every notch scrolls the same." = "Schnelles Drehen scrollt weiter. „aus“ = jede Raste gleich weit.";
+
+/* Richtung */
+"Direction (mouse only, trackpad stays unchanged)" = "Richtung (nur Maus, Trackpad bleibt unverändert)";
+"Reverse vertical" = "Vertikal umkehren";
+"Reverse horizontal" = "Horizontal umkehren";
+"Shift + wheel scrolls horizontally" = "Shift + Mausrad scrollt waagerecht";
+
+/* Mittlere Maustaste */
+"Middle mouse button (like on Windows)" = "Mittlere Maustaste (wie unter Windows)";
+"Autoscroll with the middle mouse button" = "Autoscroll mit der mittleren Maustaste";
+"Autoscroll speed" = "Autoscroll-Tempo";
+"The further you move the mouse from the starting point, the faster it scrolls." = "Je weiter du die Maus vom Startpunkt wegbewegst, desto schneller scrollt es.";
+"Keep normal middle-click on links and tabs" = "Mittelklick auf Links und Tabs normal lassen";
+"Finder: middle-click a folder to open it in a new tab" = "Finder: Mittelklick auf Ordner öffnet ihn als Tab";
+"Click once: scrolls toward the mouse until you click again. Hold: scrolls until you release. On links, middle-click still opens a new tab; on tabs, it closes them." = "Kurz klicken: scrollt in Richtung der Maus, bis du erneut klickst. Gedrückt halten: scrollt, bis du loslässt. Auf Links öffnet der Mittelklick weiterhin einen neuen Tab, auf Tabs schließt er sie.";
+
+/* Ausnahmen */
+"Exceptions" = "Ausnahmen";
+"None – MouseOnRoids works in all apps." = "Keine – MouseOnRoids wirkt in allen Apps.";
+"Add app…" = "App hinzufügen…";
+"In these apps the mouse scrolls as if MouseOnRoids weren’t running – e.g. for games or apps with their own scrolling." = "In diesen Apps scrollt die Maus wie ohne MouseOnRoids – z. B. für Spiele oder Programme mit eigenem Scrollen.";
+
+/* Testbereich */
+"Test area" = "Testbereich";
+"Line %lld – try scrolling here with your mouse" = "Zeile %lld – hier kannst du das Scrollen mit deiner Maus ausprobieren";
+
+/* Allgemein */
+"General" = "Allgemein";
+"Launch at login" = "Bei Anmeldung starten";
+"Show icon in the menu bar" = "Symbol in der Menüleiste anzeigen";
+"Menu bar icon" = "Menüleisten-Symbol";
+"Monochrome" = "Einfarbig";
+"Color" = "Farbig";
+"Without the icon, open this window by launching MouseOnRoids again from the Applications folder." = "Ohne Symbol öffnest du dieses Fenster, indem du MouseOnRoids im Programme-Ordner erneut startest.";
+"Restore defaults" = "Standardwerte wiederherstellen";
+"Could not change launch at login" = "Autostart konnte nicht geändert werden";

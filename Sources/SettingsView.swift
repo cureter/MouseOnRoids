@@ -7,6 +7,7 @@ final class AppState: ObservableObject {
     @Published var running = false
 }
 
+// Alle Texte sind englische Schlüssel; Übersetzungen liegen in Resources/<sprache>.lproj/Localizable.strings.
 struct SettingsView: View {
     @ObservedObject var state: AppState
 
@@ -18,6 +19,7 @@ struct SettingsView: View {
     @AppStorage(Key.reverseHorizontal) private var reverseHorizontal = false
     @AppStorage(Key.shiftHorizontal) private var shiftHorizontal = true
     @AppStorage(Key.showMenuIcon) private var showMenuIcon = true
+    @AppStorage(Key.monochromeMenuIcon) private var monochromeMenuIcon = true
     @AppStorage(Key.autoscroll) private var autoscroll = true
     @AppStorage(Key.autoscrollSpeed) private var autoscrollSpeed = 1.0
     @AppStorage(Key.autoscrollKeepLinks) private var autoscrollKeepLinks = true
@@ -29,52 +31,52 @@ struct SettingsView: View {
         Form {
             Section {
                 statusRow
-                Toggle("Sanftes Scrollen aktiviert", isOn: $enabled)
+                Toggle("Smooth scrolling enabled", isOn: $enabled)
             }
 
             Section {
-                Picker("Voreinstellung", selection: presetBinding) {
+                Picker("Preset", selection: presetBinding) {
                     ForEach(Preset.allCases) { Text($0.title).tag(Optional($0)) }
-                    if presetBinding.wrappedValue == nil { Text("Eigene").tag(Preset?.none) }
+                    if presetBinding.wrappedValue == nil { Text("Custom").tag(Preset?.none) }
                 }
                 .pickerStyle(.segmented)
 
-                sliderRow("Scroll-Distanz pro Raste", value: $step, range: 10...200,
+                sliderRow("Scroll distance per notch", value: $step, range: 10...200,
                           text: "\(Int(step)) px",
-                          hint: "Kleiner = weniger Strecke pro Klick am Mausrad.")
-                sliderRow("Weichheit", value: $smoothness, range: 0.02...0.35,
+                          hint: "Smaller = less distance per click of the wheel.")
+                sliderRow("Smoothness", value: $smoothness, range: 0.02...0.35,
                           text: "\(Int(smoothness * 1000)) ms",
-                          hint: "Wie lange das Scrollen nach jeder Raste ausrollt.")
-                sliderRow("Beschleunigung", value: $acceleration, range: 0...1,
-                          text: acceleration < 0.01 ? "aus" : "\(Int(acceleration * 100)) %",
-                          hint: "Schnelles Drehen scrollt weiter. „aus“ = jede Raste gleich weit.")
-            } header: { Text("Scrollverhalten") }
+                          hint: "How long scrolling glides after each notch.")
+                sliderRow("Acceleration", value: $acceleration, range: 0...1,
+                          text: acceleration < 0.01 ? String(localized: "off") : "\(Int(acceleration * 100)) %",
+                          hint: "Spinning the wheel fast scrolls further. “off” = every notch scrolls the same.")
+            } header: { Text("Scrolling") }
 
             Section {
-                Toggle("Vertikal umkehren", isOn: $reverseVertical)
-                Toggle("Horizontal umkehren", isOn: $reverseHorizontal)
-                Toggle("Shift + Mausrad scrollt waagerecht", isOn: $shiftHorizontal)
-            } header: { Text("Richtung (nur Maus, Trackpad bleibt unverändert)") }
+                Toggle("Reverse vertical", isOn: $reverseVertical)
+                Toggle("Reverse horizontal", isOn: $reverseHorizontal)
+                Toggle("Shift + wheel scrolls horizontally", isOn: $shiftHorizontal)
+            } header: { Text("Direction (mouse only, trackpad stays unchanged)") }
 
             Section {
-                Toggle("Autoscroll mit der mittleren Maustaste", isOn: $autoscroll)
+                Toggle("Autoscroll with the middle mouse button", isOn: $autoscroll)
                 if autoscroll {
-                    sliderRow("Autoscroll-Tempo", value: $autoscrollSpeed, range: 0.3...3,
+                    sliderRow("Autoscroll speed", value: $autoscrollSpeed, range: 0.3...3,
                               text: "\(Int(autoscrollSpeed * 100)) %",
-                              hint: "Je weiter du die Maus vom Startpunkt wegbewegst, desto schneller scrollt es.")
-                    Toggle("Mittelklick auf Links und Tabs normal lassen", isOn: $autoscrollKeepLinks)
+                              hint: "The further you move the mouse from the starting point, the faster it scrolls.")
+                    Toggle("Keep normal middle-click on links and tabs", isOn: $autoscrollKeepLinks)
                 }
-                Toggle("Finder: Mittelklick auf Ordner öffnet ihn als Tab", isOn: $finderMiddleTab)
+                Toggle("Finder: middle-click a folder to open it in a new tab", isOn: $finderMiddleTab)
             } header: {
-                Text("Mittlere Maustaste (wie unter Windows)")
+                Text("Middle mouse button (like on Windows)")
             } footer: {
-                Text("Kurz klicken: scrollt in Richtung der Maus, bis du erneut klickst. Gedrückt halten: scrollt, bis du loslässt. Auf Links öffnet der Mittelklick weiterhin einen neuen Tab, auf Tabs schließt er sie.")
+                Text("Click once: scrolls toward the mouse until you click again. Hold: scrolls until you release. On links, middle-click still opens a new tab; on tabs, it closes them.")
                     .font(.caption).foregroundStyle(.secondary)
             }
 
             Section {
                 if excluded.isEmpty {
-                    Text("Keine – MouseOnRoids wirkt in allen Apps.")
+                    Text("None – MouseOnRoids works in all apps.")
                         .foregroundStyle(.secondary)
                 }
                 ForEach(excluded, id: \.self) { id in
@@ -86,7 +88,7 @@ struct SettingsView: View {
                             .foregroundStyle(.red)
                     }
                 }
-                Menu("App hinzufügen…") {
+                Menu("Add app…") {
                     ForEach(runningApps, id: \.bundleIdentifier) { app in
                         Button(app.localizedName ?? app.bundleIdentifier ?? "?") {
                             if let id = app.bundleIdentifier { add(id) }
@@ -95,9 +97,9 @@ struct SettingsView: View {
                 }
                 .fixedSize()
             } header: {
-                Text("Ausnahmen")
+                Text("Exceptions")
             } footer: {
-                Text("In diesen Apps scrollt die Maus wie ohne MouseOnRoids – z. B. für Spiele oder Programme mit eigenem Scrollen.")
+                Text("In these apps the mouse scrolls as if MouseOnRoids weren’t running – e.g. for games or apps with their own scrolling.")
                     .font(.caption).foregroundStyle(.secondary)
             }
 
@@ -105,7 +107,7 @@ struct SettingsView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 6) {
                         ForEach(1...80, id: \.self) { i in
-                            Text("Zeile \(i) – hier kannst du das Scrollen mit deiner Maus ausprobieren")
+                            Text("Line \(i) – try scrolling here with your mouse")
                                 .foregroundStyle(i % 10 == 0 ? .primary : .secondary)
                         }
                     }
@@ -113,22 +115,28 @@ struct SettingsView: View {
                     .padding(8)
                 }
                 .frame(height: 160)
-            } header: { Text("Testbereich") }
+            } header: { Text("Test area") }
 
             Section {
-                Toggle("Bei Anmeldung starten", isOn: $launchAtLogin)
+                Toggle("Launch at login", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { setLaunchAtLogin($0) }
-                Toggle("Symbol in der Menüleiste anzeigen", isOn: $showMenuIcon)
-                if !showMenuIcon {
-                    Text("Ohne Symbol öffnest du dieses Fenster, indem du MouseOnRoids im Programme-Ordner erneut startest.")
+                Toggle("Show icon in the menu bar", isOn: $showMenuIcon)
+                if showMenuIcon {
+                    Picker("Menu bar icon", selection: $monochromeMenuIcon) {
+                        Text("Monochrome").tag(true)
+                        Text("Color").tag(false)
+                    }
+                    .pickerStyle(.segmented)
+                } else {
+                    Text("Without the icon, open this window by launching MouseOnRoids again from the Applications folder.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 HStack {
-                    Button("Standardwerte wiederherstellen") { Defaults.reset() }
+                    Button("Restore defaults") { Defaults.reset() }
                     Spacer()
-                    Button("MouseOnRoids beenden") { NSApp.terminate(nil) }
+                    Button("Quit MouseOnRoids") { NSApp.terminate(nil) }
                 }
-            } header: { Text("Allgemein") }
+            } header: { Text("General") }
         }
         .formStyle(.grouped)
         .frame(width: 500)
@@ -139,23 +147,23 @@ struct SettingsView: View {
 
     @ViewBuilder private var statusRow: some View {
         if state.running {
-            Label("Läuft – Mausrad wird geglättet", systemImage: "checkmark.circle.fill")
+            Label("Running – mouse wheel is being smoothed", systemImage: "checkmark.circle.fill")
                 .foregroundStyle(.green)
         } else {
             VStack(alignment: .leading, spacing: 8) {
-                Label("Bedienungshilfen-Zugriff fehlt", systemImage: "exclamationmark.triangle.fill")
+                Label("Accessibility permission missing", systemImage: "exclamationmark.triangle.fill")
                     .foregroundStyle(.orange)
-                Text("Solange der Zugriff fehlt, scrollt die Maus ganz normal wie ohne MouseOnRoids. Erlaube MouseOnRoids unter Datenschutz & Sicherheit → Bedienungshilfen.")
+                Text("Until access is granted, the mouse scrolls normally, as without MouseOnRoids. Allow MouseOnRoids under Privacy & Security → Accessibility.")
                     .font(.caption).foregroundStyle(.secondary)
-                Button("Systemeinstellungen öffnen") {
+                Button("Open System Settings") {
                     NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
                 }
             }
         }
     }
 
-    private func sliderRow(_ title: String, value: Binding<Double>, range: ClosedRange<Double>,
-                           text: String, hint: String) -> some View {
+    private func sliderRow(_ title: LocalizedStringKey, value: Binding<Double>, range: ClosedRange<Double>,
+                           text: String, hint: LocalizedStringKey) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(title)
@@ -203,7 +211,7 @@ struct SettingsView: View {
         } catch {
             launchAtLogin = SMAppService.mainApp.status == .enabled
             let alert = NSAlert()
-            alert.messageText = "Autostart konnte nicht geändert werden"
+            alert.messageText = String(localized: "Could not change launch at login")
             alert.informativeText = error.localizedDescription
             alert.runModal()
         }
@@ -214,11 +222,11 @@ struct SettingsView: View {
     enum Preset: String, CaseIterable, Identifiable {
         case precise, balanced, fast
         var id: String { rawValue }
-        var title: String {
+        var title: LocalizedStringKey {
             switch self {
-            case .precise: "Präzise"
-            case .balanced: "Ausgewogen"
-            case .fast: "Schnell"
+            case .precise: "Precise"
+            case .balanced: "Balanced"
+            case .fast: "Fast"
             }
         }
         var values: (step: Double, smoothness: Double, acceleration: Double) {
