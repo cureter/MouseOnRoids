@@ -107,10 +107,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         enabledItem.state = enabled ? .on : .off
         permissionItem.isHidden = engine.isRunning
         statusItem.isVisible = UserDefaults.standard.bool(forKey: Key.showMenuIcon)
-        statusItem.button?.image = NSImage(systemSymbolName: enabled ? "computermouse.fill" : "computermouse",
-                                           accessibilityDescription: "MouseOnRoids")
-        statusItem.button?.appearsDisabled = !engine.isRunning
+        statusItem.button?.image = menuBarIcon
+        // Ausgeschaltet oder ohne Berechtigung: Symbol abgeblendet
+        statusItem.button?.alphaValue = enabled && engine.isRunning ? 1 : 0.4
     }
+
+    /// Das App-Icon in Menüleisten-Größe
+    private lazy var menuBarIcon: NSImage? = {
+        let icon = NSApp.applicationIconImage.copy() as? NSImage
+        icon?.size = NSSize(width: 20, height: 20)
+        icon?.accessibilityDescription = "MouseOnRoids"
+        return icon
+    }()
 
     @objc private func toggleEnabled() {
         UserDefaults.standard.set(!Settings.enabled, forKey: Key.enabled)
